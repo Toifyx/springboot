@@ -21,6 +21,14 @@ public class CountLogger
         end = System.currentTimeMillis();
     }
 
+    public long getCostTime() {
+        return end - start;
+    }
+
+    public Logger getLogger(){
+        return logger;
+    }
+
     public void logCostTime(){
         logger.error("cost time is {} , from {} to {}", end - start, start, end);
     }

@@ -1,6 +1,5 @@
 package com.toi.demon.support;
 
-import com.toi.demon.control.LoggerControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,40 +13,40 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class LogThread implements Runnable {
 
-    private int MAX_CHAR_LEN;
+    private int maxCharLen;
 
-    private static int MAX_THREAD_NUM = 25;
-
-    private static int MAX_COUNT_NUM = 100;
-
-    private static Logger logger = LoggerFactory.getLogger(LoggerControl.class);
+    private static Logger logger = LoggerFactory.getLogger(LogThread.class);
 
     private static Random random = new Random();
 
     char[] defaultValue = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            '~', '!', '@', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+'};
 
     public LogThread(int maxCharLen) {
-        MAX_CHAR_LEN = maxCharLen;
+        this.maxCharLen = maxCharLen;
     }
 
     public LogThread() {
-        MAX_CHAR_LEN = 100;
+        maxCharLen = 100;
     }
 
     @Override
     public void run() {
 
-        int threadNum = random.nextInt(MAX_THREAD_NUM);
+        // 默认获取打印log数量
+        int maxCountNum = ConfigData.getMaxCountNum();
+        int threadNum = random.nextInt(ConfigData.getMaxThreadNum());
+
         final CountDownLatch latch = new CountDownLatch(threadNum);
         AtomicInteger messageCount = new AtomicInteger(0);
 
         for (int i = 0; i < threadNum; i++) {
             new Thread(() -> {
-                while (messageCount.get() < MAX_COUNT_NUM) {
+                while (messageCount.get() < maxCountNum) {
                     messageCount.incrementAndGet();
                     // 随机打印一百字节
-                    char[] chars = new char[MAX_CHAR_LEN];
+                    char[] chars = new char[maxCharLen];
                     for (int j = 0; j < chars.length; j++) {
                         int a = random.nextInt(defaultValue.length);
                         chars[j] = defaultValue[a];

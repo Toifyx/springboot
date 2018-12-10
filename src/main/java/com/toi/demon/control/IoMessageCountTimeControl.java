@@ -1,22 +1,19 @@
 package com.toi.demon.control;
 
+import com.toi.demon.log.CountLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
-public class LoggerControl {
+public class IoMessageCountTimeControl {
 
     /**
      * 100字节
@@ -31,11 +28,10 @@ public class LoggerControl {
      */
     private static String record_400_byte = "Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.Performance Testing.";
 
-
     @Resource
     private CountLogger countLogger;
 
-    private static Logger logger = LoggerFactory.getLogger(LoggerControl.class);
+    private static Logger logger = LoggerFactory.getLogger(IoMessageCountTimeControl.class);
 
     @RequestMapping(value = "/logger/{count}/{threadNum}/{recordByte}")
     @ResponseBody

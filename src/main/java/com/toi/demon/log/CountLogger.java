@@ -1,4 +1,4 @@
-package com.toi.demon.control;
+package com.toi.demon.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

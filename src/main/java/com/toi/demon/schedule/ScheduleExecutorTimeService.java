@@ -14,7 +14,10 @@ import static com.toi.demon.constant.Constant.CORE_POOL_SIZE;
 @Component
 public class ScheduleExecutorTimeService {
 
-    private final static long DELAY = 30000;
+    /**
+     * 1时(h)=3600000毫秒(ms)
+     */
+    private final static long DELAY = 60000;
 
     ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(CORE_POOL_SIZE, new NamedThreadFactory("hi-logger-writer", true));
 

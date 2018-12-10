@@ -22,16 +22,28 @@ public class ScheduleExecutorLogService {
 
     private List<ScheduledFuture> scheduledFutureList = Collections.synchronizedList(new ArrayList<>());
 
+    private List<String> logInfoList = Collections.synchronizedList(new ArrayList<>());
+
     public void startLog(int maxCharLen, long delay) {
         ScheduledFuture<?> scheduledFuture = scheduledExecutor.scheduleWithFixedDelay(
                 new LogThread(maxCharLen), INITIAL_DELAY, delay, TimeUnit.MILLISECONDS);
         scheduledFutureList.add(scheduledFuture);
+        logInfoList.add(maxCharLen + "|" + delay);
     }
 
     public void cancel() {
         for (ScheduledFuture scheduledFuture : scheduledFutureList) {
             scheduledFuture.cancel(true);
+            scheduledFutureList.remove(scheduledFuture);
         }
     }
 
+    public String getLogInfo(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String info:logInfoList){
+            stringBuilder.append(info);
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
 }

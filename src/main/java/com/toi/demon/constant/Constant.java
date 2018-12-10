@@ -2,6 +2,9 @@ package com.toi.demon.constant;
 
 public class Constant {
 
+    /**
+     * 延迟一秒后运行
+     */
     public final static long INITIAL_DELAY = 1000;
 
     /**

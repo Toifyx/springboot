@@ -24,6 +24,11 @@ public class ScheduleControl {
         return "success";
     }
 
+    @RequestMapping("getSchedule")
+    public String getSchedule() {
+        return scheduleExecutorService.getLogInfo();
+    }
+
     @RequestMapping("cancelSchedule")
     public String cancelSchedule() {
         scheduleExecutorService.cancel();
@@ -36,18 +41,28 @@ public class ScheduleControl {
         return "success";
     }
 
-    @RequestMapping("setMaxCountNum/{maxThreadNum}")
+    @RequestMapping("getMaxCountNum")
+    public String getMaxCountNum() {
+        return String.valueOf(ConfigData.getMaxCountNum());
+    }
+
+    @RequestMapping("setMaxThreadNum/{maxThreadNum}")
     public String setMaxThreadNum(@PathVariable("maxThreadNum") String maxThreadNum) {
         ConfigData.setMaxThreadNum(Integer.parseInt(maxThreadNum));
         return "success";
     }
 
+    @RequestMapping("getMaxThreadNum")
+    public String getMaxThreadNum() {
+        return String.valueOf(ConfigData.getMaxThreadNum());
+    }
+
     @RequestMapping("increase/{times}")
     public String increase(@PathVariable("times") String times) {
+        scheduleExecutorTimeService.createTimeSchedule();
         int maxCountNum = ConfigData.getMaxCountNum();
         maxCountNum = Integer.parseInt(times) * maxCountNum;
         ConfigData.setMaxCountNum(maxCountNum);
-        scheduleExecutorTimeService.createTimeSchedule();
         return "success";
     }
 

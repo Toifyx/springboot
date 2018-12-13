@@ -38,6 +38,14 @@ http://localhost:9991/cancelSchedule
 # 增大打印 (新增)
 http://localhost:9991/increase/{times}
 
+
+http://localhost:9991/setMaxCountNum/1
 http://localhost:9991/setMaxThreadNum/1
-http://localhost:9991/initSchedule/10/5000
+http://localhost:9991/initSchedule/10/1000
 http://localhost:9991/increase/2
+
+curl http://localhost:9991/initSchedule/100/1000
+curl http://localhost:9991/initSchedule/125/1000
+curl http://localhost:9991/initSchedule/150/1000
+curl http://localhost:9991/initSchedule/200/1000
+curl http://localhost:9991/initSchedule/400/1000

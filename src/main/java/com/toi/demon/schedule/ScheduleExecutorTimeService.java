@@ -17,33 +17,42 @@ public class ScheduleExecutorTimeService {
     /**
      * 1时(h)=3600000毫秒(ms)
      */
-    private final static long DELAY = 60000;
+    private final static long DELAY = 3600000;
+
+    private int maxCountNum;
 
     ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(CORE_POOL_SIZE, new NamedThreadFactory("hi-logger-writer", true));
 
     ScheduledFuture scheduledFuture;
 
-    public void createTimeSchedule() {
+    public boolean createTimeSchedule() {
         if (this.scheduledFuture != null) {
-            scheduledFuture.cancel(true);
+            return false;
         }
+        maxCountNum = ConfigData.getMaxCountNum();;
         this.scheduledFuture = scheduledExecutor.scheduleWithFixedDelay(
                 new TimeThread(), DELAY, DELAY, TimeUnit.MILLISECONDS);
+        return true;
+    }
+
+    public boolean cancelTimeSchedule(){
+        if (this.scheduledFuture != null) {
+            scheduledFuture.cancel(true);
+            ConfigData.setMaxCountNum(maxCountNum);
+            scheduledFuture = null;
+            return true;
+        }
+        return false;
     }
 
     class TimeThread implements Runnable {
 
-        private int maxCountNum;
-
-        private TimeThread() {
-            this.maxCountNum = ConfigData.getMaxCountNum();
-        }
-
         @Override
         public void run() {
-            ConfigData.setMaxCountNum(maxCountNum);
             if (scheduledFuture != null) {
+                ConfigData.setMaxCountNum(maxCountNum);
                 scheduledFuture.cancel(true);
+                scheduledFuture = null;
             }
         }
     }

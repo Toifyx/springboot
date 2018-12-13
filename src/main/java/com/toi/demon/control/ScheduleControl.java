@@ -59,11 +59,23 @@ public class ScheduleControl {
 
     @RequestMapping("increase/{times}")
     public String increase(@PathVariable("times") String times) {
-        scheduleExecutorTimeService.createTimeSchedule();
-        int maxCountNum = ConfigData.getMaxCountNum();
-        maxCountNum = Integer.parseInt(times) * maxCountNum;
-        ConfigData.setMaxCountNum(maxCountNum);
-        return "success";
+        if(scheduleExecutorTimeService.createTimeSchedule()){
+            int maxCountNum = ConfigData.getMaxCountNum();
+            maxCountNum = Integer.parseInt(times) * maxCountNum;
+            ConfigData.setMaxCountNum(maxCountNum);
+            return "success";
+        }else{
+            return "false";
+        }
+    }
+
+    @RequestMapping("increaseCancel")
+    public String increaseCancel() {
+        if (scheduleExecutorTimeService.cancelTimeSchedule()) {
+            return "success";
+        } else {
+            return "false";
+        }
     }
 
 }

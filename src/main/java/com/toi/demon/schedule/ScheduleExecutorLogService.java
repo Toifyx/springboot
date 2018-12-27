@@ -20,9 +20,9 @@ public class ScheduleExecutorLogService {
 
     ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(CORE_POOL_SIZE, new NamedThreadFactory("hi-logger-writer", true));
 
-    private List<ScheduledFuture> scheduledFutureList = Collections.synchronizedList(new ArrayList<>());
+    private List<ScheduledFuture> scheduledFutureList = new ArrayList<>();
 
-    private List<String> logInfoList = Collections.synchronizedList(new ArrayList<>());
+    private List<String> logInfoList = new ArrayList<>();
 
     public void startLog(int maxCharLen, long delay) {
         ScheduledFuture<?> scheduledFuture = scheduledExecutor.scheduleWithFixedDelay(
@@ -34,8 +34,9 @@ public class ScheduleExecutorLogService {
     public void cancel() {
         for (ScheduledFuture scheduledFuture : scheduledFutureList) {
             scheduledFuture.cancel(true);
-            scheduledFutureList.remove(scheduledFuture);
         }
+        scheduledFutureList.clear();
+        logInfoList.clear();
     }
 
     public String getLogInfo(){

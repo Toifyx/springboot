@@ -37,12 +37,13 @@
    - 获取打印任务
      http://localhost:9991/getSchedule
    - 停止打印任务
-     http://localhost:9991/cancelSchedule
+     
    - 增加打印压力
      http://localhost:9991/increase/{times}
 
-## 测试默认参照参数
+## 测试默认参照参数 
    **生产单台虚拟机平均每天打印日志大小2.5G**
+   **237M/Hour,5.57G/Day 3.95mb/min** 
    - 打印100char，每一秒钟打印100笔
    http://localhost:9991/initSchedule/100/1000
    - 打印125char，每一秒钟打印100笔
@@ -51,3 +52,37 @@
    http://localhost:9991/initSchedule/150/1000
    - 打印200char，每一秒钟打印100笔
    http://localhost:9991/initSchedule/200/1000
+
+
+## 测试数据
+- 打印100char，每一秒钟打印100笔
+    0.72 Mb/min
+- 打印125char，每一秒钟打印100笔
+    0.9 Mb/min
+- 打印150char，每一秒钟打印100笔
+    0.99 Mb/min
+- 打印200char，每一秒钟打印100笔
+    1.3  Mb/min
+
+分析生产接入日志：S.LSNSVR
+统计每小时日志量(文件个数:646,当日写文件总大小3.1G)：
+16，12，12，24，18，12，13，20，28，31，57，40，47，39，33，32，32，30，30，30，30，30，26，19，15
+上午8点日志量开始上升，10-12点达到峰值。下午1点至21点日志量相对均衡。后逐步回落。
+测试程序日志可根据以上数据进行测试。
+均小时写日志量：74M
+忙时写日志量(9-12h)：220M
+一般时间写日志量（13-21h）:150M
+
+4.2M * 60 = 252M
+
+-rw-r----- 1 root root   0 Dec 12 12:37 CountLogger.log
+-rw-r----- 1 root root 20M Dec 17 17:32 LoggerControl.log
+
+20M * 12 = 240M
+-rw-r----- 1 root root 19M Dec 17 17:37 LoggerControl.log
+-rw-r----- 1 root root 21M Dec 17 17:32 LoggerControl.log.1
+
+21M * 10 = 210M
+-rw-r----- 1 root root 19M Dec 17 17:42 LoggerControl.log
+-rw-r----- 1 root root 21M Dec 17 17:37 LoggerControl.log.1
+-rw-r----- 1 root root 21M Dec 17 17:32 LoggerControl.log.2
